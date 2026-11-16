@@ -61,12 +61,14 @@ else:
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
-            response = client.chat.completions.create(
-                model="gemini-2.5-flash",
-                messages=st.session_state.messages
-            )
-            reply = response.choices[0].message.content
-            st.markdown(reply)
-
-        st.session_state.messages.append({"role": "assistant", "content": reply})
-      
+            try:
+                response = client.chat.completions.create(
+                    model="gemini-2.5-flash",
+                    messages=st.session_state.messages
+                )
+                reply = response.choices[0].message.content
+                st.markdown(reply)
+                st.session_state.messages.append({"role": "assistant", "content": reply})
+            except Exception as e:
+                st.error(f"Error de sistema: {e}")
+        
